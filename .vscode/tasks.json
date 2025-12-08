@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Launch LÖVE 2D",
+      "type": "process",
+      "command": "${workspaceFolder}\\love2d\\love.exe",
+      "args": ["${workspaceFolder}\\src"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "close": true
+      },
+      "isBackground": false
+    }
+  ]
+}
