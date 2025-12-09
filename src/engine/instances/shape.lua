@@ -47,7 +47,9 @@ end
 
 function shape:Render()
     love.graphics.push()
-	love.graphics.translate(self.Position.x + self.Parent.Camera.Position.x, self.Position.y + self.Parent.Camera.Position.y)
+    local camPos = self.Parent.Camera.Position
+    local convertedPos = vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
+	love.graphics.translate(self.Position.x + convertedPos.x, self.Position.y + convertedPos.y)
     love.graphics.scale(self.Parent.Camera.Zoom, self.Parent.Camera.Zoom)
 	love.graphics.rotate(self.Rotation)
 	love.graphics.rectangle("fill", -self.Size.x/2, -self.Size.y/2, self.Size.x, self.Size.y)
@@ -56,33 +58,40 @@ end
 
 function shape:IsVisible()
     local size = self.Size
-    local camera = self.Parent.Camera
     local pos = self.Position
-    pos = camera:ToScreenSpace(pos)
 
-    local WindowHeight = 600
-    local WindowWidth = 800
+    local camera = self.Parent.Camera
+    if camera then
+        pos = camera:ToScreenSpace(pos)
+    end
 
-    local left = pos.x - (size.x / 2)
-    local right = pos.x + (size.x / 2)
-    local top = pos.y - (size.y / 2)
-    local bottom = pos.y + (size.y / 2)
+    local screenW = love.graphics.getWidth()
+    local screenH = love.graphics.getHeight()
+
+    local halfW = size.x / 2
+    local halfH = size.y / 2
+
+    local left   = pos.x - halfW
+    local right  = pos.x + halfW
+    local top    = pos.y - halfH
+    local bottom = pos.y + halfH
 
     if right < 0 then
         return false
     end
-    if left > WindowWidth then
+    if left > screenW then
         return false
     end
     if bottom < 0 then
         return false
     end
-    if top > WindowHeight then
+    if top > screenH then
         return false
     end
 
     return true
 end
+
 
 function shape:SetScene(scene)
     self.Parent = scene

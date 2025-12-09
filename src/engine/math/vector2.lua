@@ -46,10 +46,11 @@ function Vector2:distance(v)
     return math.sqrt(dx*dx + dy*dy)
 end
 
-function Vector2.lerp(a, b, t)
+
+function Vector2:lerp(goal, percent)
     return Vector2.new(
-        a.x + (b.x - a.x) * t,
-        a.y + (b.y - a.y) * t
+        self.x + (goal.x - self.x) * percent,
+        self.y + (goal.y - self.y) * percent
     )
 end
 

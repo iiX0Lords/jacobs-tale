@@ -27,7 +27,6 @@ end
 
 function sprite:Render()
     if self.Image == nil then return end
-
     if self.Image ~= self._previousImage then
         self._previousImage = self.Image
         self:_updateVariables()
@@ -35,8 +34,14 @@ function sprite:Render()
 
     love.graphics.push()
 
-    love.graphics.translate(self.Parent.Camera.Position.x, self.Parent.Camera.Position.y)
     love.graphics.scale(self.Parent.Camera.Zoom, self.Parent.Camera.Zoom)
+    local wx, wy = love.graphics.inverseTransformPoint(0, 0)
+
+    local camPos = self.Parent.Camera.Position
+    local convertedPos = vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
+
+
+    love.graphics.translate(convertedPos.x, convertedPos.y)
 
     local scale = vector2.new(
         self.Size.x / self.ImageSize.x,

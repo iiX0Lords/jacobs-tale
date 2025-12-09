@@ -38,45 +38,37 @@ function camera:SetActive(bool)
 end
 
 function camera:ToWorldSpace(screenPos)
-    local cx, cy = self.Position.x, self.Position.y
-    local angle = 0
-    local sx = self.Zoom
-    local sy = self.Zoom
+    local camX, camY = self.Position.x, self.Position.y
+    local zoom = self.Zoom
 
-    local dx = screenPos.x - cx
-    local dy = screenPos.y - cy
+    local screenW = love.graphics.getWidth()
+    local screenH = love.graphics.getHeight()
 
-    local c = math.cos(-angle)
-    local s = math.sin(-angle)
+    local dx = (screenPos.x - screenW / 2) / zoom
+    local dy = (screenPos.y - screenH / 2) / zoom
 
-    local rotatedX = dx * c - dy * s
-    local rotatedY = dx * s + dy * c
-
-    local worldX = rotatedX / sx
-    local worldY = rotatedY / sy
+    local worldX = camX + dx
+    local worldY = camY + dy
 
     return vector2.new(worldX, worldY)
 end
 
+
 function camera:ToScreenSpace(worldPos)
-    local cx, cy = self.Position.x, self.Position.y
-    local angle = 0
-    local sx = self.Zoom
-    local sy = self.Zoom
+    local camX, camY = self.Position.x, self.Position.y
+    local zoom = self.Zoom
 
-    local scaledX = worldPos.x * sx
-    local scaledY = worldPos.y * sy
+    local screenW = love.graphics.getWidth()
+    local screenH = love.graphics.getHeight()
 
-    local c = math.cos(angle)
-    local s = math.sin(angle)
+    local dx = (worldPos.x - camX) * zoom
+    local dy = (worldPos.y - camY) * zoom
 
-    local rotatedX = scaledX * c - scaledY * s
-    local rotatedY = scaledX * s + scaledY * c
-
-    local screenX = rotatedX + cx
-    local screenY = rotatedY + cy
+    local screenX = dx + (screenW / 2)
+    local screenY = dy + (screenH / 2)
 
     return vector2.new(screenX, screenY)
 end
+
 
 return camera
