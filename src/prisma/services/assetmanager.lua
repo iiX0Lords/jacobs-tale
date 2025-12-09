@@ -1,12 +1,15 @@
 
 
-local instance = require("engine.instances.instance")
+local Instance = require('prisma.instances.instance')
 
+--- @class AssetManager
 local assetmanager = {}
 assetmanager.__index = assetmanager
-setmetatable(assetmanager, instance)
+setmetatable(assetmanager, Instance)
 assetmanager.new = nil
 
+--- Attempts to load image using filepath
+--- @param path string
 function assetmanager.LoadImage(path)
     local exists = love.filesystem.getInfo(path)
     if exists then
@@ -15,6 +18,8 @@ function assetmanager.LoadImage(path)
     return nil
 end
 
+--- Attempts to require lua file at path
+--- @param path string
 function assetmanager.AttemptRequire(path)
     local exists = love.filesystem.getInfo(path)
     if exists then

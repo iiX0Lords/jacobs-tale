@@ -1,8 +1,10 @@
 
-local instance = require("engine.instances.instance")
-local vector2 = require("engine.math.vector2")
-local colour = require("engine.math.colour")
 
+local instance = require("prisma.instances.instance")
+local vector2 = require('prisma.math.vector2')
+local colour = require('prisma.math.colour')
+
+--- @class Camera
 local camera = {}
 camera.__index = camera
 setmetatable(camera, instance)
@@ -21,11 +23,8 @@ function camera.new()
     return self
 end
 
-function camera:SetScene(scene)
-    self.Parent = scene
-    table.insert(scene.Children, self)
-end
-
+--- Makes the camera the currently active camera for the scene
+--- @param bool boolean
 function camera:SetActive(bool)
     if self.Parent == nil then return end
     if bool then
@@ -37,9 +36,12 @@ function camera:SetActive(bool)
     end
 end
 
+--- Converts Vector2 to WorldSpace
+--- @param screenPos Vector2
+--- @return Vector2
 function camera:ToWorldSpace(screenPos)
     local camX, camY = self.Position.x, self.Position.y
-    local zoom = self.Zoom
+    local zoom = self.Zoom or 1
 
     local screenW = love.graphics.getWidth()
     local screenH = love.graphics.getHeight()
@@ -53,10 +55,12 @@ function camera:ToWorldSpace(screenPos)
     return vector2.new(worldX, worldY)
 end
 
-
+--- Converts Vector2 to ScreenSpace
+--- @param worldPos Vector2
+--- @return Vector2
 function camera:ToScreenSpace(worldPos)
     local camX, camY = self.Position.x, self.Position.y
-    local zoom = self.Zoom
+    local zoom = self.Zoom or 1
 
     local screenW = love.graphics.getWidth()
     local screenH = love.graphics.getHeight()

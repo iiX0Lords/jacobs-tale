@@ -1,26 +1,30 @@
-
 --[[
 
     TODO
 ]]
 
-local sceneManager = require("engine.instances.scene")
+local sceneManager = require('prisma.instances.scene')
+
 local scenes = {}
 
+--- @class Prisma
 local engine = {
-    Vector2 = require("engine.math.vector2")
+    Vector2 = require('prisma.math.vector2')
 }
 
 engine.instances = {
-    Shape = require("engine.instances.shape")
+    Shape = require('prisma.instances.shape')
 }
 engine.services = {
-    Runservice = require("engine.services.runservice"),
-    AssetManager = require("engine.services.assetmanager"),
-    InputService = require("engine.services.inputservice")
+    Runservice = require('prisma.services.runservice'),
+    AssetManager = require('prisma.services.assetmanager'),
+    InputService = require('prisma.services.inputservice')
 }
-engine.Colour = require("engine.math.colour")
+engine.Colour = require('prisma.math.colour')
 
+--- Create a new scene.
+--- @param name string
+--- @return Instance
 function engine:CreateScene(name)
     local newScene = sceneManager.new()
     newScene.Name = name
@@ -30,6 +34,9 @@ function engine:CreateScene(name)
     return newScene
 end
 
+--- Get ZIndex based on instance type.
+--- @param instance Instance
+--- @return number
 function GetZ(instance)
     if instance:IsA("label") then
         return instance.ZIndex + 100000
@@ -37,6 +44,7 @@ function GetZ(instance)
     return instance.ZIndex
 end
 
+--- Render a single frame.
 function engine:Render()
     for _, scene in pairs(scenes) do
         if scene.Active == true then
@@ -55,8 +63,11 @@ function engine:Render()
     end
 end
 
+--- Create a new instance.
+--- @param classname string
+--- @return Instance
 function engine.Instance(classname)
-    return engine.services.AssetManager.AttemptRequire("engine/instances/".. string.lower(classname) ..".lua").new()
+    return engine.services.AssetManager.AttemptRequire("prisma/instances/".. string.lower(classname) ..".lua").new()
 end
 
 function love.update(dt)

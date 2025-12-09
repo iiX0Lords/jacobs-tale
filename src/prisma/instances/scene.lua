@@ -1,12 +1,13 @@
 
-local instance = require("engine.instances.instance")
+local Instance = require('prisma.instances.instance')
 
+--- @class Scene
 local scene = {}
 scene.__index = scene
-setmetatable(scene, instance)
+setmetatable(scene, Instance)
 
 function scene.new()
-    local self = instance.new()
+    local self = Instance.new()
     setmetatable(self, scene)
     self.Name = "Scene"
     self.ClassName = self.Name

@@ -2,17 +2,20 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Launch LÖVE 2D",
+      "label": "Run Love2D Game",
       "type": "process",
       "command": "${workspaceFolder}\\love2d\\love.exe",
       "args": ["${workspaceFolder}\\src"],
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "presentation": {
         "reveal": "always",
         "panel": "shared",
-        "close": true
+        "focus": true
       },
-      "isBackground": false
+      "problemMatcher": []
     }
   ]
 }

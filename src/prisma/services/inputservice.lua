@@ -1,14 +1,17 @@
 
-local instance = require("engine.instances.instance")
-local vector2 = require("engine.math.vector2")
+local Instance = require('prisma.instances.instance')
+local vector2 = require('prisma.math.vector2')
 
+--- @class InputService
 local inputservice = {}
 inputservice.__index = inputservice
-setmetatable(inputservice, instance)
+setmetatable(inputservice, Instance)
 inputservice.new = nil
 
 local inputEvents = {}
 
+--- Create a new KeyPress event
+--- @param callback function
 function inputservice.OnKeypressed(callback)
     table.insert(inputEvents, {
         Type = "Keyboard",
@@ -16,6 +19,9 @@ function inputservice.OnKeypressed(callback)
         Callback = callback
     })
 end
+
+--- Create a new KeyRelease event
+--- @param callback function
 function inputservice.OnKeyreleased(callback)
     table.insert(inputEvents, {
         Type = "Keyboard",
@@ -24,6 +30,8 @@ function inputservice.OnKeyreleased(callback)
     })
 end
 
+--- Create a new Mousedown event
+--- @param callback function
 function inputservice.OnMousedown(callback)
     table.insert(inputEvents, {
         Type = "Mouse",
@@ -31,6 +39,9 @@ function inputservice.OnMousedown(callback)
         Callback = callback
     })
 end
+
+--- Create a new Mouserelease event
+--- @param callback function
 function inputservice.OnMouserelease(callback)
     table.insert(inputEvents, {
         Type = "Mouse",

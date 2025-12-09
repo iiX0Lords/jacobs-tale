@@ -1,27 +1,29 @@
 
-local instance = require("engine.instances.instance")
-local vector2 = require("engine.math.vector2")
-local colour = require("engine.math.colour")
+local Instance = require('prisma.instances.instance')
+local Vector2 = require('prisma.math.vector2')
+local Colour = require('prisma.math.colour')
 
+--- @class Shape
 local shape = {}
 shape.__index = shape
-setmetatable(shape, instance)
+setmetatable(shape, Instance)
 
 function shape.new()
-    local self = instance.new()
+    local self = Instance.new()
     setmetatable(self, shape)
     self.Name = "Shape"
     self.ClassName = self.Name
-    self.Size = vector2.new(100, 100)
-    self.Position = vector2.new(0, 0)
+    self.Size = Vector2.new(100, 100)
+    self.Position = Vector2.new(0, 0)
     self.Rotation = 0
-    self.Colour = colour.new(255, 255, 255)
+    self.Colour = Colour.new(255, 255, 255)
 
     self.Parent = nil
 
     return self
 end
 
+--- Destroy self, removing entirely
 function shape:Destroy()
     if self.Parent then
         local children = self.Parent.Children
@@ -45,10 +47,11 @@ function shape:Destroy()
     end
 end
 
+--- Render for current frame
 function shape:Render()
     love.graphics.push()
     local camPos = self.Parent.Camera.Position
-    local convertedPos = vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
+    local convertedPos = Vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
 	love.graphics.translate(self.Position.x + convertedPos.x, self.Position.y + convertedPos.y)
     love.graphics.scale(self.Parent.Camera.Zoom, self.Parent.Camera.Zoom)
 	love.graphics.rotate(self.Rotation)
@@ -56,9 +59,14 @@ function shape:Render()
 	love.graphics.pop()
 end
 
+--- Checks if currently visible on screen
+--- @return boolean
 function shape:IsVisible()
+    if self.Parent == nil then return false end
     local size = self.Size
+    if size == nil then return false end
     local pos = self.Position
+    if pos == nil then return false end
 
     local camera = self.Parent.Camera
     if camera then
@@ -90,12 +98,6 @@ function shape:IsVisible()
     end
 
     return true
-end
-
-
-function shape:SetScene(scene)
-    self.Parent = scene
-    table.insert(scene.Children, self)
 end
 
 return shape

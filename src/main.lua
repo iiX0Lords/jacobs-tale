@@ -1,4 +1,4 @@
-local engine = require("engine.main")
+local engine = require('prisma')
 
 local mainScene = engine:CreateScene("Main")
 

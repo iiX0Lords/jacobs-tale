@@ -9,16 +9,20 @@
 
 ]]
 
-local instance = require("engine.instances.instance")
+local Instance = require('prisma.instances.instance')
 
+--- @class RunService
 local runservice = {}
 runservice.__index = runservice
-setmetatable(runservice, instance)
+setmetatable(runservice, Instance)
 runservice.new = nil
 
 runservice.loops = {}
 runservice.drawingloops = {}
 
+--- Create a function that runs every frame
+--- @param name string
+--- @param callback function
 function runservice:RenderStep(name, callback)
     table.insert(runservice.loops, {
         Name = name,
@@ -26,6 +30,9 @@ function runservice:RenderStep(name, callback)
     })
 end
 
+--- Create a function that runs everytime love.draw is ran
+--- @param name string
+--- @param callback function
 function runservice:OnDraw(name, callback)
     table.insert(runservice.drawingloops, {
         Name = name,

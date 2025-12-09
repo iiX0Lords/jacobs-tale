@@ -1,3 +1,6 @@
+---@diagnostic disable: assign-type-mismatch
+
+--- @class Vector2
 local Vector2 = {}
 Vector2.__index = Vector2
 

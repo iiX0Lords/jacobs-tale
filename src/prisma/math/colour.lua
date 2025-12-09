@@ -1,5 +1,5 @@
 
-
+--- @class Colour
 local colour = {}
 colour.__index = colour
 
