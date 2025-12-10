@@ -33,3 +33,11 @@ end)
 engine.services.Runservice:OnDraw("draw", function()
     fps.Text = "FPS: ".. tostring(love.timer.getFPS()).. "\nInstances: ".. tostring(#mainScene.Children)
 end)
+
+local fullscreen = false
+engine.services.InputService.OnKeypressed(function(key)
+    if key == "f11" then
+		fullscreen = not fullscreen
+		love.window.setFullscreen(fullscreen, "desktop")
+	end
+end)

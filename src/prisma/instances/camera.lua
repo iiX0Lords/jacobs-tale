@@ -10,8 +10,7 @@ camera.__index = camera
 setmetatable(camera, instance)
 
 function camera.new()
-    local self = instance.new()
-    setmetatable(self, camera)
+    local self = setmetatable(instance.new(), camera)
     self.Name = "camera"
     self.ClassName = self.Name
     self.Zoom = 1.0

@@ -25,7 +25,7 @@ function instance:IsA(classname)
 end
 
 --- Sets self's parent to a scene
---- @param scene Instance
+--- @param scene Scene
 function instance:SetScene(scene)
     self.Parent = scene
     table.insert(scene.Children, self)

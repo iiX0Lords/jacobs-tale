@@ -7,8 +7,7 @@ scene.__index = scene
 setmetatable(scene, Instance)
 
 function scene.new()
-    local self = Instance.new()
-    setmetatable(self, scene)
+    local self = setmetatable(Instance.new(), scene)
     self.Name = "Scene"
     self.ClassName = self.Name
     self.Children = {}

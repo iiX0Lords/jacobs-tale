@@ -9,8 +9,7 @@ shape.__index = shape
 setmetatable(shape, Instance)
 
 function shape.new()
-    local self = Instance.new()
-    setmetatable(self, shape)
+    local self = setmetatable(Instance.new(), shape)
     self.Name = "Shape"
     self.ClassName = self.Name
     self.Size = Vector2.new(100, 100)

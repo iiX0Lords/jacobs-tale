@@ -9,8 +9,7 @@ label.__index = label
 setmetatable(label, Instance)
 
 function label.new()
-    local self = Instance.new()
-    setmetatable(self, label)
+    local self = setmetatable(Instance.new(), label)
     self.Name = "label"
     self.ClassName = self.Name
     self.Size = Vector2.new(1, 1)

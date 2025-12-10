@@ -9,8 +9,7 @@ sprite.__index = sprite
 setmetatable(sprite, Shape)
 
 function sprite.new()
-    local self = Shape.new()
-    setmetatable(self, sprite)
+    local self = setmetatable(Shape.new(), sprite)
     self.Name = "Sprite"
     self.ClassName = self.Name
 

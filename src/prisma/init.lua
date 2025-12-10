@@ -24,7 +24,7 @@ engine.Colour = require('prisma.math.colour')
 
 --- Create a new scene.
 --- @param name string
---- @return Instance
+--- @return Scene
 function engine:CreateScene(name)
     local newScene = sceneManager.new()
     newScene.Name = name
