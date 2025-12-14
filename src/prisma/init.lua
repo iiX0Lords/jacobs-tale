@@ -1,88 +1,53 @@
---[[
 
-    TODO
-]]
-
-local sceneManager = require('prisma.instances.scene')
-
-local scenes = {}
+_G.concord = require("prisma.packages.concord")
+_G.batteries = require("prisma.packages.batteries")
 
 --- @class Prisma
-local engine = {
-    Vector2 = require('prisma.math.vector2')
+_G.prisma = {
+    Colour = require("prisma.math.colour"),
 }
+love.graphics.setDefaultFilter("nearest", "nearest")
 
-engine.instances = {
-    Shape = require('prisma.instances.shape')
-}
-engine.services = {
-    Runservice = require('prisma.services.runservice'),
-    AssetManager = require('prisma.services.assetmanager'),
-    InputService = require('prisma.services.inputservice')
-}
-engine.Colour = require('prisma.math.colour')
+prisma.components = {}
+prisma.systems = {}
+concord.utils.loadNamespace("prisma/components", prisma.components)
+concord.utils.loadNamespace("prisma/systems", prisma.systems)
 
---- Create a new scene.
---- @param name string
---- @return Scene
-function engine:CreateScene(name)
-    local newScene = sceneManager.new()
-    newScene.Name = name
-    newScene.Active = true
-    table.insert(scenes, newScene)
+prisma.scenes = {}
 
-    return newScene
+function prisma.CreateScene(name)
+    prisma.scenes[name] = {
+        Active = false,
+        Workspace = concord.world()
+    }
+    return prisma.scenes[name]
 end
 
---- Get ZIndex based on instance type.
---- @param instance Instance
---- @return number
-function GetZ(instance)
-    if instance:IsA("label") then
-        return instance.ZIndex + 100000
-    end
-    return instance.ZIndex
-end
-
---- Render a single frame.
-function engine:Render()
-    for _, scene in pairs(scenes) do
-        if scene.Active == true then
-            table.sort(scene.Children, function(a, b)
-                return GetZ(a) < GetZ(b)
-            end)
-            for _, instance in ipairs(scene.Children) do
-                if instance.Render then
-                    if instance:IsVisible() then
-                        love.graphics.setColor(instance.Colour.r / 255, instance.Colour.g / 255, instance.Colour.b / 255)
-                        instance:Render()
-                    end
-                end
-            end
+function love.update(dt)
+    for name, data in pairs(prisma.scenes) do
+        if data.Active then
+            data.Workspace:emit("update", dt)
         end
     end
 end
 
---- Create a new instance.
---- @param classname string
---- @return Instance
-function engine.Instance(classname)
-    return engine.services.AssetManager.AttemptRequire("prisma/instances/".. string.lower(classname) ..".lua").new()
-end
-
-function love.update(dt)
-    for _, loop in pairs(engine.services.Runservice.loops) do
-        loop.Callback(dt)
-    end
-end
 function love.draw()
-    engine:Render()
-    for _, loop in pairs(engine.services.Runservice.drawingloops) do
-        loop.Callback()
+    for name, data in pairs(prisma.scenes) do
+        if data.Active then
+            data.Workspace:emit("draw")
+        end
     end
+
+    local lua_mem = collectgarbage("count")
     
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.print(string.format("RAM:    %.2f MB", lua_mem / 1024), 20, 35)
+    love.graphics.print(string.format("FPS:        %d", love.timer.getFPS()), 20, 50)
 end
 
-print("Prisma loaded")
+prisma.Camera = {
+    Position = batteries.vec2(0, 0),
+    Zoom = 1,
+}
 
-return engine
+return prisma
