@@ -1,4 +1,4 @@
----@diagnostic disable: assign-type-mismatch, assign-type-mismatch, assign-type-mismatch
+
 --- Container for registered ComponentClasses
 -- @module Components
 

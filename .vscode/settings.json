@@ -1,8 +1,3 @@
 {
-  "Lua.diagnostics.globalUsage": true,
-  "Lua.runtime.version": "LuaJIT",
-  "Lua.runtime.special": {
-    "love.filesystem.load": "loadfile"
-  },
-  "Lua.workspace.checkThirdParty": false
+  "robloxLsp.diagnostics.globals": ["love", "concord"]
 }

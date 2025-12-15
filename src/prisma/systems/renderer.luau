@@ -5,7 +5,7 @@ local renderer = concord.system({
 function renderer.DrawShape(entity)
     love.graphics.push()
     local camPos = prisma.Camera.Position
-    local convertedPos = batteries.vec2(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
+    local convertedPos = prisma.Vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
 	love.graphics.translate(entity.Transform.Position.x + convertedPos.x, entity.Transform.Position.y + convertedPos.y)
     love.graphics.scale(prisma.Camera.Zoom, prisma.Camera.Zoom)
 	love.graphics.rotate(entity.Transform.Rotation)
@@ -14,7 +14,7 @@ function renderer.DrawShape(entity)
 end
 
 function renderer.UpdateVariables(entity)
-    entity.Renderer.ImageSize = batteries.vec2(entity.Renderer.Image:getPixelWidth(), entity.Renderer.Image:getPixelHeight())
+    entity.Renderer.ImageSize = prisma.Vector2.new(entity.Renderer.Image:getPixelWidth(), entity.Renderer.Image:getPixelHeight())
 end
 
 function renderer.DrawSprite(entity)
@@ -28,12 +28,12 @@ function renderer.DrawSprite(entity)
     love.graphics.scale(prisma.Camera.Zoom, prisma.Camera.Zoom)
 
     local camPos = prisma.Camera.Position
-    local convertedPos = batteries.vec2(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
+    local convertedPos = prisma.Vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
 
 
     love.graphics.translate(convertedPos.x, convertedPos.y)
 
-    local scale = batteries.vec2(
+    local scale = prisma.Vector2.new(
         entity.Transform.Size.x / entity.Renderer.ImageSize.x,
         entity.Transform.Size.y / entity.Renderer.ImageSize.y
     )

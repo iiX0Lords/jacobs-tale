@@ -1,10 +1,10 @@
 
-_G.concord = require("prisma.packages.concord")
-_G.batteries = require("prisma.packages.batteries")
+_G.concord = require("prisma/packages/concord")
 
 --- @class Prisma
 _G.prisma = {
-    Colour = require("prisma.math.colour"),
+    Colour = require("prisma/math/colour"),
+    Vector2 = require("prisma/math/vector2")
 }
 love.graphics.setDefaultFilter("nearest", "nearest")
 
@@ -46,7 +46,7 @@ function love.draw()
 end
 
 prisma.Camera = {
-    Position = batteries.vec2(0, 0),
+    Position = prisma.Vector2.new(0, 0),
     Zoom = 1,
 }
 

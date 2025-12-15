@@ -2,20 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run Love2D Game",
+      "label": "Compile Kaledis",
+      "type": "shell",
+      "command": "kaledis compile -o",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build and Run",
       "type": "process",
-      "command": "${workspaceFolder}\\love2d\\love.exe",
-      "args": ["${workspaceFolder}\\src"],
+      "command": "${workspaceFolder}/dist/jacobs-tale.exe",
+      "dependsOn": "Compile Kaledis",
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
+        "focus": true,
+        "panel": "shared"
+      }
     }
   ]
 }

@@ -4,6 +4,10 @@
 local Type = {}
 
 function Type.isCallable(t)
+   if t == nil then
+      return false
+   end
+
    if type(t) == "function" then return true end
 
    local meta = getmetatable(t)
