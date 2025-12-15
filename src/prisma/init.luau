@@ -10,8 +10,8 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 
 prisma.components = {}
 prisma.systems = {}
-concord.utils.loadNamespace("prisma/components", prisma.components)
-concord.utils.loadNamespace("prisma/systems", prisma.systems)
+concord.utils.loadNamespace("components", prisma.components)
+concord.utils.loadNamespace("systems", prisma.systems)
 
 prisma.scenes = {}
 
