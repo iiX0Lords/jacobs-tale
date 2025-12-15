@@ -3,8 +3,9 @@
   "tasks": [
     {
       "label": "Compile Kaledis",
-      "type": "shell",
-      "command": "kaledis compile -o",
+      "type": "process",
+      "command": "${workspaceFolder}/love2d/kaledis/kaledis.exe",
+      "args": ["compile", "-o"],
       "group": "build",
       "problemMatcher": []
     },
