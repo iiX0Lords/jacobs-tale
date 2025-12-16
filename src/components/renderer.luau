@@ -4,4 +4,6 @@ return concord.component("Renderer", function(self, colour)
 
     self._previousImage = nil
     self.ImageSize = prisma.Vector2.new(0, 0)
+
+    self.ZIndex = 1
 end)

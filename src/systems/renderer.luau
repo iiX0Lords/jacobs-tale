@@ -44,7 +44,12 @@ function renderer.DrawSprite(entity)
 end
 
 function renderer:draw()
-    for _, entity in ipairs(self.pool) do
+    --#TODO OPTIMISE
+    local entities = self.pool
+    table.sort(entities, function(a, b)
+        return a.Renderer.ZIndex < b.Renderer.ZIndex
+    end)
+    for _, entity in ipairs(entities) do
         love.graphics.setColor(entity.Renderer.Colour.r / 255, entity.Renderer.Colour.g / 255, entity.Renderer.Colour.b / 255)
         if entity.Renderer.Image == nil then
             renderer.DrawShape(entity)
