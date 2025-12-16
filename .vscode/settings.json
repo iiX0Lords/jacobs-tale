@@ -1,3 +1,4 @@
 {
-  "robloxLsp.diagnostics.globals": ["love", "concord", "prisma"]
+  "robloxLsp.diagnostics.globals": ["love", "concord", "prisma"],
+  "robloxLsp.diagnostics.disable": ["deprecated"]
 }

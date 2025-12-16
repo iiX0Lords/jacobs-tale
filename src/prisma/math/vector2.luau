@@ -56,10 +56,16 @@ function Vector2:lerp(goal, percent)
 end
 
 function Vector2.__add(a, b)
+    if type(b) == "number" then
+        return Vector2.new(a.x + b, a.y + b)
+    end
     return Vector2.new(a.x + b.x, a.y + b.y)
 end
 
 function Vector2.__sub(a, b)
+    if type(b) == "number" then
+        return Vector2.new(a.x - b, a.y - b)
+    end
     return Vector2.new(a.x - b.x, a.y - b.y)
 end
 
@@ -73,10 +79,13 @@ function Vector2.__mul(a, b)
     elseif type(b) == "number" then
         return Vector2.new(a.x * b, a.y * b)
     end
-    error("Vector2 can only multiply by a number")
+    return Vector2.new(a.x * b.x, a.y * b.y)
 end
 
 function Vector2.__div(a, b)
+    if type(b) == "number" then
+        return Vector2.new(a.x / b, a.y / b)
+    end
     return Vector2.new(a.x / b, a.y / b)
 end
 

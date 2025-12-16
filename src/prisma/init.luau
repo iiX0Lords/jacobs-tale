@@ -6,6 +6,9 @@ _G.prisma = {
     Colour = require("prisma/math/colour"),
     Vector2 = require("prisma/math/vector2")
 }
+_G.Vector2 = prisma.Vector2
+_G.Colour = prisma.Colour
+
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 prisma.components = {}
