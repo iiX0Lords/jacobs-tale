@@ -51,6 +51,37 @@ end
 prisma.Camera = {
     Position = prisma.Vector2.new(0, 0),
     Zoom = 1,
+    ToWorldSpace = function(screenPos)
+        local camX, camY = prisma.Camera.Position.x, prisma.Camera.Position.y
+        local zoom = prisma.Camera.Zoom or 1
+
+        local screenW = love.graphics.getWidth()
+        local screenH = love.graphics.getHeight()
+
+        local dx = (screenPos.x - screenW / 2) / zoom
+        local dy = (screenPos.y - screenH / 2) / zoom
+
+        local worldX = camX + dx
+        local worldY = camY + dy
+
+        return Vector2.new(worldX, worldY)
+    end,
+    ToScreenSpace = function(worldPos)
+        local camX, camY = prisma.Camera.Position.x, prisma.Camera.Position.y
+        local zoom = prisma.Camera.Zoom or 1
+
+        local screenW = love.graphics.getWidth()
+        local screenH = love.graphics.getHeight()
+
+        local dx = (worldPos.x - camX) * zoom
+        local dy = (worldPos.y - camY) * zoom
+
+        local screenX = dx + (screenW / 2)
+        local screenY = dy + (screenH / 2)
+
+        return Vector2.new(screenX, screenY)
+    end,
+
 }
 
 return prisma

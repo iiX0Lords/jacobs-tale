@@ -9,6 +9,9 @@ KEYBINDS = {
     Right = {"d", "right"}
 }
 
+local World = nil
+local collisionSystem = nil
+
 function playercontroller.ProcessInput(entity, dt)
     local physics = entity.Physics
     if love.keyboard.isDown(KEYBINDS.Forward) then
@@ -26,10 +29,29 @@ function playercontroller.ProcessInput(entity, dt)
 end
 
 function playercontroller:update(dt)
+    if World == nil then return end
     for _, entity in ipairs(self.pool) do
         playercontroller.ProcessInput(entity, dt)
 
         prisma.Camera.Position = prisma.Camera.Position:lerp(entity.Transform.Position, 0.1)
+
+        entity.Transform.Rotation += 0.5 * dt
+
+        local results = collisionSystem:query(entity)
+        for _, other in pairs(results) do
+            print("Colliding", dt)
+        end
+
+        local mousePos = Vector2.new(love.mouse.getX(), love.mouse.getY())
+        local direction = -(entity.Transform.Position - prisma.Camera.ToWorldSpace(mousePos)):normalized()
+        local closestEntity, closestPoint, closestDist = collisionSystem:raycast(entity.Transform.Position, direction, 1000, {entity})
+        print(closestEntity, closestPoint, closestDist)
     end
 end
+
+function playercontroller:init(world)
+    World = world
+    collisionSystem = World:getSystem(prisma.systems.collisionsystem)
+end
+
 return playercontroller

@@ -5,41 +5,21 @@ local mainScene = {
 
 mainScene.Scene.Workspace:addSystems(
   prisma.systems.renderer,
+  prisma.systems.collisionsystem,
   prisma.systems.playercontroller,
   prisma.systems.physicshandler,
-  prisma.systems.enemyhandler,
-  prisma.systems.collisionsystem
+  prisma.systems.enemyhandler
 )
 
-function spawnEntity(image)
-  if image == nil then return end
-  local entity = concord.entity()
-  entity:give("Transform")
-  entity:give("Renderer")
-  entity:give("Physics")
-  entity:give("Hitbox")
-  entity.Renderer.Image = image
+
+function spawnEntity(path)
+  local entity = require(path)
   mainScene.Scene.Workspace:addEntity(entity)
   return entity
 end
+spawnEntity("entities/player")
 
-local plr = spawnEntity(love.graphics.newImage("assets/jacobPIXEL.png"))
-plr.Transform.Size = Vector2.new(50 * 2, 50 * 2)
-plr.Renderer.ZIndex = 2
-plr:give("Player", 20)
-
-plr.Hitbox.Hitboxes = {
-  {
-    Position = Vector2.new(0, 0),
-    Size = Vector2.new(25, 100)
-  },
-}
-
-
-local enemy = spawnEntity(love.graphics.newImage("assets/diddy.png"))
-enemy:give("Enemy")
+local enemy = spawnEntity("entities/diddy")
 enemy.Transform.Position = Vector2.new(50, 50)
-
-local mySystem = mainScene.Scene.Workspace:getSystem(prisma.systems.collisionsystem)
 
 return mainScene
