@@ -28,6 +28,8 @@ end
 function playercontroller:update(dt)
     for _, entity in ipairs(self.pool) do
         playercontroller.ProcessInput(entity, dt)
+
+        prisma.Camera.Position = prisma.Camera.Position:lerp(entity.Transform.Position, 0.1)
     end
 end
 return playercontroller

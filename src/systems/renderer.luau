@@ -13,6 +13,17 @@ function renderer.DrawShape(entity)
 	love.graphics.pop()
 end
 
+function renderer.DrawHitbox(entity, hitbox)
+    love.graphics.push()
+    local camPos = prisma.Camera.Position
+    local convertedPos = prisma.Vector2.new(-camPos.x + love.graphics.getWidth() / 2, -camPos.y + love.graphics.getHeight() / 2)
+	love.graphics.translate((entity.Transform.Position.x + hitbox.Position.x) + convertedPos.x, (entity.Transform.Position.y + hitbox.Position.y) + convertedPos.y)
+    love.graphics.scale(prisma.Camera.Zoom, prisma.Camera.Zoom)
+	love.graphics.rotate(entity.Transform.Rotation)
+	love.graphics.rectangle("line", -hitbox.Size.x/2, -hitbox.Size.y/2, hitbox.Size.x, hitbox.Size.y)
+	love.graphics.pop()
+end
+
 function renderer.UpdateVariables(entity)
     entity.Renderer.ImageSize = prisma.Vector2.new(entity.Renderer.Image:getPixelWidth(), entity.Renderer.Image:getPixelHeight())
 end

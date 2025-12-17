@@ -7,7 +7,8 @@ mainScene.Scene.Workspace:addSystems(
   prisma.systems.renderer,
   prisma.systems.playercontroller,
   prisma.systems.physicshandler,
-  prisma.systems.enemyhandler
+  prisma.systems.enemyhandler,
+  prisma.systems.collisionsystem
 )
 
 function spawnEntity(image)
@@ -16,6 +17,7 @@ function spawnEntity(image)
   entity:give("Transform")
   entity:give("Renderer")
   entity:give("Physics")
+  entity:give("Hitbox")
   entity.Renderer.Image = image
   mainScene.Scene.Workspace:addEntity(entity)
   return entity
@@ -26,9 +28,18 @@ plr.Transform.Size = Vector2.new(50 * 2, 50 * 2)
 plr.Renderer.ZIndex = 2
 plr:give("Player", 20)
 
+plr.Hitbox.Hitboxes = {
+  {
+    Position = Vector2.new(0, 0),
+    Size = Vector2.new(25, 100)
+  },
+}
+
 
 local enemy = spawnEntity(love.graphics.newImage("assets/diddy.png"))
 enemy:give("Enemy")
 enemy.Transform.Position = Vector2.new(50, 50)
+
+local mySystem = mainScene.Scene.Workspace:getSystem(prisma.systems.collisionsystem)
 
 return mainScene
