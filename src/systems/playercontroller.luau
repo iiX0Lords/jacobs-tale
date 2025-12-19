@@ -1,6 +1,7 @@
 local playercontroller = prisma.Concord.system({
     pool = {"Player", "Transform", "Physics"},
 })
+playercontroller.Default = true
 
 KEYBINDS = {
     Forward = {"w", "up"},

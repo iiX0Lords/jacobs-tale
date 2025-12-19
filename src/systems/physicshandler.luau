@@ -1,7 +1,8 @@
 local physicsHandler = prisma.Concord.system({
     pool = {"Physics", "Transform"},
 })
-
+physicsHandler.Priority = 2
+physicsHandler.Default = true
 
 function physicsHandler:update(dt)
     for _, entity in ipairs(self.pool) do

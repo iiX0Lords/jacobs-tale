@@ -2,6 +2,7 @@ local enemyHandler = prisma.Concord.system({
     pool = {"Enemy", "Transform", "Renderer", "Physics"},
     player = {"Player"}
 })
+enemyHandler.Default = true
 
 local player = nil
 local World = nil

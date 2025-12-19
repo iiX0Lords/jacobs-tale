@@ -1,4 +1,6 @@
 
+require("prisma/packages/print")
+
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 _G.prisma = {

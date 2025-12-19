@@ -1,6 +1,8 @@
 local renderer = prisma.Concord.system({
     pool = {"Renderer", "Transform"},
 })
+renderer.Priority = 1
+renderer.Default = true
 
 function renderer.DrawShape(entity)
     love.graphics.push()

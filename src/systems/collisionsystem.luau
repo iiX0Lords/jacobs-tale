@@ -1,6 +1,8 @@
 local collisionSystem = prisma.Concord.system({
     pool = {"Transform", "Hitbox", "Renderer"},
 })
+collisionSystem.Priority = 3
+collisionSystem.Default = true
 
 local CELLSIZE = 100
 

@@ -2,14 +2,7 @@
 local mainScene = {
   Scene = prisma.Scenes:CreateScene("Main")
 }
-
-mainScene.Scene.Workspace:addSystems(
-  prisma.Systems.renderer,
-  prisma.Systems.physicshandler,
-  prisma.Systems.collisionsystem,
-  prisma.Systems.playercontroller,
-  prisma.Systems.enemyhandler
-)
+prisma.Systemhandler:AddSystems(mainScene.Scene.Workspace)
 
 function spawnEntity(path)
   local entity = require(path)
