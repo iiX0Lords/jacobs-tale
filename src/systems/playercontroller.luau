@@ -1,4 +1,4 @@
-local playercontroller = concord.system({
+local playercontroller = prisma.Concord.system({
     pool = {"Player", "Transform", "Physics"},
 })
 
@@ -14,18 +14,23 @@ local collisionSystem = nil
 
 function playercontroller.ProcessInput(entity, dt)
     local physics = entity.Physics
-    if love.keyboard.isDown(KEYBINDS.Forward) then
-        physics.Velocity.y = -(entity.Player.Speed * 10) * dt
+    local moveSpeed = entity.Player.Speed * dt
+
+    local inputX, inputY = 0, 0
+
+    if love.keyboard.isDown(KEYBINDS.Forward) then inputY = inputY - 1 end
+    if love.keyboard.isDown(KEYBINDS.Backward) then inputY = inputY + 1 end
+    if love.keyboard.isDown(KEYBINDS.Left) then inputX = inputX - 1 end
+    if love.keyboard.isDown(KEYBINDS.Right) then inputX = inputX + 1 end
+
+    if inputX ~= 0 or inputY ~= 0 then
+        local length = math.sqrt(inputX^2 + inputY^2)
+        inputX = (inputX / length) * moveSpeed
+        inputY = (inputY / length) * moveSpeed
     end
-    if love.keyboard.isDown(KEYBINDS.Backward) then
-        physics.Velocity.y = (entity.Player.Speed * 10) * dt
-    end
-    if love.keyboard.isDown(KEYBINDS.Left) then
-        physics.Velocity.x = -(entity.Player.Speed * 10) * dt
-    end
-    if love.keyboard.isDown(KEYBINDS.Right) then
-        physics.Velocity.x = (entity.Player.Speed * 10) * dt
-    end
+
+    physics.Velocity.x = inputX / dt
+    physics.Velocity.y = inputY / dt
 end
 
 function playercontroller:update(dt)
@@ -34,24 +39,12 @@ function playercontroller:update(dt)
         playercontroller.ProcessInput(entity, dt)
 
         prisma.Camera.Position = prisma.Camera.Position:lerp(entity.Transform.Position, 0.1)
-
-        entity.Transform.Rotation += 0.5 * dt
-
-        local results = collisionSystem:query(entity)
-        for _, other in pairs(results) do
-            print("Colliding", dt)
-        end
-
-        local mousePos = Vector2.new(love.mouse.getX(), love.mouse.getY())
-        local direction = -(entity.Transform.Position - prisma.Camera.ToWorldSpace(mousePos)):normalized()
-        local closestEntity, closestPoint, closestDist = collisionSystem:raycast(entity.Transform.Position, direction, 1000, {entity})
-        print(closestEntity, closestPoint, closestDist)
     end
 end
 
 function playercontroller:init(world)
     World = world
-    collisionSystem = World:getSystem(prisma.systems.collisionsystem)
+    collisionSystem = World:getSystem(prisma.Systems.collisionsystem)
 end
 
 return playercontroller

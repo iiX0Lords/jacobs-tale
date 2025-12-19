@@ -1,4 +1,4 @@
-return concord.component("Renderer", function(self, colour)
+return prisma.Concord.component("Renderer", function(self, colour)
     self.Image = nil
     self.Colour = colour or prisma.Colour.new(255, 255, 255, 255)
 

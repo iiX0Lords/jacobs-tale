@@ -13,6 +13,11 @@ function colour.new(red, green, blue, alpha)
     return self
 end
 
-
+export type Colour = {
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+}
 
 return colour

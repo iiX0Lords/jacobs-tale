@@ -97,4 +97,30 @@ function Vector2.__tostring(v)
     return string.format("Vector2(%g, %g)", v.x, v.y)
 end
 
+export type Vector2 = {
+    x: number,
+    y: number,
+
+    clone: (self: Vector2) -> Vector2,
+    magnitude: (self: Vector2) -> number,
+    sqrMagnitude: (self: Vector2) -> number,
+    normalized: (self: Vector2) -> Vector2,
+    normalize: (self: Vector2) -> Vector2,
+    dot: (self: Vector2, v: Vector2) -> number,
+    distance: (self: Vector2, v: Vector2) -> number,
+    lerp: (self: Vector2, goal: Vector2, percent: number) -> Vector2,
+
+    __add: ((self: Vector2, b: Vector2 | number) -> Vector2),
+    __sub: ((self: Vector2, b: Vector2 | number) -> Vector2),
+    __mul: ((self: Vector2, b: Vector2 | number) -> Vector2),
+    __div: ((self: Vector2, b: number) -> Vector2),
+    __unm: (self: Vector2) -> Vector2,
+    __tostring: (self: Vector2) -> string,
+}
+
+type Vector2Static = {
+    __index: Vector2Static,
+    new: (x: number?, y: number?) -> Vector2,
+}
+
 return Vector2

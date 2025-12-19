@@ -1,4 +1,4 @@
-local collisionSystem = concord.system({
+local collisionSystem = prisma.Concord.system({
     pool = {"Transform", "Hitbox", "Renderer"},
 })
 
@@ -93,7 +93,7 @@ end
 local function getEntityBounds(entity)
     local hitboxes = entity.Hitbox.Hitboxes
     if not hitboxes or #hitboxes == 0 then
-        hitboxes = {{Position = Vector2.new(0,0), Size = entity.Hitbox.Size}}
+        hitboxes = {{Position = prisma.Vector2.new(0,0), Size = entity.Hitbox.Size}}
     end
 
     local minX, minY, maxX, maxY = math.huge, math.huge, -math.huge, -math.huge
@@ -112,12 +112,12 @@ end
 function intersects(a, b)
     local hitboxesA = a.Hitbox.Hitboxes
     if not hitboxesA or #hitboxesA == 0 then
-        hitboxesA = {{Position=Vector2.new(0,0), Size=a.Hitbox.Size}}
+        hitboxesA = {{Position=prisma.Vector2.new(0,0), Size=a.Hitbox.Size}}
     end
 
     local hitboxesB = b.Hitbox.Hitboxes
     if not hitboxesB or #hitboxesB == 0 then
-        hitboxesB = {{Position=Vector2.new(0,0), Size=b.Hitbox.Size}}
+        hitboxesB = {{Position=prisma.Vector2.new(0,0), Size=b.Hitbox.Size}}
     end
 
     for _, hbA in ipairs(hitboxesA) do
@@ -198,7 +198,7 @@ function collisionSystem:raycast(origin, direction, maxDistance, filter)
                     
                     local hitboxes = entity.Hitbox.Hitboxes
                     if not hitboxes or #hitboxes == 0 then
-                        hitboxes = {{Position = Vector2.new(0,0), Size = entity.Hitbox.Size}}
+                        hitboxes = {{Position = prisma.Vector2.new(0,0), Size = entity.Hitbox.Size}}
                     end
 
                     for _, hb in ipairs(hitboxes) do
@@ -237,7 +237,11 @@ function collisionSystem:raycast(origin, direction, maxDistance, filter)
         debugRays[#debugRays].hit = true
     end
 
-    return closestEntity, closestPoint, closestDist
+    return {
+        hit = closestEntity,
+        point = closestPoint,
+        distance = closestDist
+    }
 end
 
 function collisionSystem:update(dt)
@@ -347,7 +351,7 @@ function collisionSystem:draw()
             love.graphics.setColor(1, 0, 0, 1)
             local hitboxes = entity.Hitbox.Hitboxes
             if not hitboxes or #hitboxes == 0 then
-                hitboxes = {{Position = Vector2.new(0,0), Size = entity.Hitbox.Size}}
+                hitboxes = {{Position = prisma.Vector2.new(0,0), Size = entity.Hitbox.Size}}
             end
             for _, hb in ipairs(hitboxes) do
                 drawPolygon(getHitboxVertices(entity, hb))
@@ -361,7 +365,7 @@ function collisionSystem:draw()
         if cx and cy then
             local centerX = (tonumber(cx) * CELLSIZE) + (CELLSIZE / 2)
             local centerY = (tonumber(cy) * CELLSIZE) + (CELLSIZE / 2)
-            draw(Vector2.new(centerX, centerY), Vector2.new(CELLSIZE, CELLSIZE))
+            draw(prisma.Vector2.new(centerX, centerY), prisma.Vector2.new(CELLSIZE, CELLSIZE))
         end
     end
     

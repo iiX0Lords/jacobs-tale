@@ -1,4 +1,4 @@
-local renderer = concord.system({
+local renderer = prisma.Concord.system({
     pool = {"Renderer", "Transform"},
 })
 

@@ -1,87 +1,54 @@
 
-_G.concord = require("prisma/packages/concord")
-
---- @class Prisma
-_G.prisma = {
-    Colour = require("prisma/math/colour"),
-    Vector2 = require("prisma/math/vector2")
-}
-_G.Vector2 = prisma.Vector2
-_G.Colour = prisma.Colour
-
 love.graphics.setDefaultFilter("nearest", "nearest")
 
-prisma.components = {}
-prisma.systems = {}
-concord.utils.loadNamespace("components", prisma.components)
-concord.utils.loadNamespace("systems", prisma.systems)
+_G.prisma = {
+    Colour = require("prisma/math/colour"),
+    Vector2 = require("prisma/math/vector2"),
+    Concord = require("prisma/packages/concord"),
+    Components = {},
+    Systems = {}
+}
+prisma.Concord.utils.loadNamespace("components", prisma.Components)
+prisma.Concord.utils.loadNamespace("systems", prisma.Systems)
 
-prisma.scenes = {}
+function requireDir(path)
+    local files = {}
+    local items = love.filesystem.getDirectoryItems(path)
+    for _, file in ipairs(items) do
+        local filePath = path .. "/" .. file
+        if love.filesystem.getInfo(filePath).type == "file" and file:sub(-4) == ".lua" then
+            local moduleName = file:sub(1, -5)
 
-function prisma.CreateScene(name)
-    prisma.scenes[name] = {
-        Active = false,
-        Workspace = concord.world()
-    }
-    return prisma.scenes[name]
+            local requirePath = path:gsub("/", ".") .. "." .. moduleName
+            files[moduleName] = require(requirePath)
+        end
+    end
+    return files
+end
+
+for name,value in pairs(requireDir("prisma/services")) do
+    name = (name:gsub("^%l", string.upper))
+    prisma[name] = value
 end
 
 function love.update(dt)
-    for name, data in pairs(prisma.scenes) do
+    for name, data in pairs(prisma.Scenes.Scenes) do
         if data.Active then
             data.Workspace:emit("update", dt)
         end
     end
+
+    prisma.Time:tick(dt)
 end
 
 function love.draw()
-    for name, data in pairs(prisma.scenes) do
+    for name, data in pairs(prisma.Scenes.Scenes) do
         if data.Active then
             data.Workspace:emit("draw")
         end
     end
 
-    local lua_mem = collectgarbage("count")
-    
-    love.graphics.setColor(1, 0, 0, 1)
-    love.graphics.print(string.format("RAM:    %.2f MB", lua_mem / 1024), 20, 35)
-    love.graphics.print(string.format("FPS:        %d", love.timer.getFPS()), 20, 50)
+    prisma.Debug:DrawStats()
 end
-
-prisma.Camera = {
-    Position = prisma.Vector2.new(0, 0),
-    Zoom = 1,
-    ToWorldSpace = function(screenPos)
-        local camX, camY = prisma.Camera.Position.x, prisma.Camera.Position.y
-        local zoom = prisma.Camera.Zoom or 1
-
-        local screenW = love.graphics.getWidth()
-        local screenH = love.graphics.getHeight()
-
-        local dx = (screenPos.x - screenW / 2) / zoom
-        local dy = (screenPos.y - screenH / 2) / zoom
-
-        local worldX = camX + dx
-        local worldY = camY + dy
-
-        return Vector2.new(worldX, worldY)
-    end,
-    ToScreenSpace = function(worldPos)
-        local camX, camY = prisma.Camera.Position.x, prisma.Camera.Position.y
-        local zoom = prisma.Camera.Zoom or 1
-
-        local screenW = love.graphics.getWidth()
-        local screenH = love.graphics.getHeight()
-
-        local dx = (worldPos.x - camX) * zoom
-        local dy = (worldPos.y - camY) * zoom
-
-        local screenX = dx + (screenW / 2)
-        local screenY = dy + (screenH / 2)
-
-        return Vector2.new(screenX, screenY)
-    end,
-
-}
 
 return prisma
